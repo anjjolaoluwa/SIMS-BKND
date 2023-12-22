@@ -65,7 +65,10 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN;
 console.log(CORS_ORIGIN);
 
 app.use(
-  cors({ credentials: true, origin: ["http://localhost:5173", CORS_ORIGIN] })
+  cors({
+    credentials: true,
+    origin: ["http://localhost:5173", "http://192.168.137.1:5173", CORS_ORIGIN],
+  })
 );
 app.use("/api/v1/attendance", validateToken, attendanceRouter);
 app.use("/api/v1/student", validateToken, studentRouter);
@@ -81,7 +84,9 @@ app.use(customErrorHandler);
 (async () => {
   try {
     await connectDB();
-    app.listen(PORT, () => console.log("Server listening on PORT:" + PORT));
+    app.listen(PORT, "192.168.137.1", () =>
+      console.log("Server listening on PORT:" + PORT)
+    );
   } catch (error) {
     console.log(error);
   }
